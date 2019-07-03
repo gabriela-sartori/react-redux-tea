@@ -15,11 +15,17 @@ export const createMsgs = (namespace, names) =>
 
 export const registerCmds = xs => {
 
-    if (! Array.isArray (xs) || xs.length === 0)
-        throw new Error ("Expected input to be an array with 2 elements [msg, function *]")
+    if (! Array.isArray (xs))
+        throw new Error ("Expected input to be an array of arrays with 2 elements each [msg, function *]")
 
-    if (xs.length !== 2)
-        throw new Error (`Expected input to have 2 elements, at msg ${xs[0]}`)
+    xs.forEach ((row, index) => {
+        if (! Array.isArray (row))
+            throw new Error (`Expected row to be an array, at index ${index}`)
+        else if (row.length === 0)
+            throw new Error (`Expected row to have 2 elements, at index ${index}`)
+        else if (row.length !== 2)
+            throw new Error (`Expected row to have 2 elements, at index ${index} and msg ${xs[0]}`)
+    })
 
     return function * () {
         yield all (xs.map (([msg, cmd]) => {
