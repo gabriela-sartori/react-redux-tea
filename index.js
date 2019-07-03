@@ -24,7 +24,7 @@ export const registerCmds = xs => {
         else if (row.length === 0)
             throw new Error (`Expected row to have 2 elements, at index ${index}`)
         else if (row.length !== 2)
-            throw new Error (`Expected row to have 2 elements, at index ${index} and msg ${xs[0]}`)
+            throw new Error (`Expected row to have 2 elements, at index ${index} and msg ${row[0]}`)
     })
 
     return function * () {
