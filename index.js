@@ -13,12 +13,20 @@ export const createMsgs = (namespace, names) =>
         .map (_ => createMsg (namespace, _))
         .reduce ((acc, x) => ({...acc, [x.key]: x.build }), {})
 
-export const registerCmds = xs =>
-    function * () {
+export const registerCmds = xs => {
+
+    if (! Array.isArray (xs) || xs.length === 0)
+        throw new Error ("Expected input to be an array with 2 elements [msg, function *]")
+
+    if (xs.length !== 2)
+        throw new Error (`Expected input to have 2 elements, at msg ${xs[0]}`)
+
+    return function * () {
         yield all (xs.map (([msg, cmd]) => {
             return takeEvery (msg.key, cmd)
         }))
     }
+}
 
 export const connect = (modelToProps, msgToProps, merge, options) =>
     react_redux_connect (
