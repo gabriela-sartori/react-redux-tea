@@ -1,9 +1,8 @@
 {
   "name": "react-redux-tea",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "https://github.com/G4BB3R/react-redux-tea",
   "author": "Gabriel Torrecillas Sartori <gabriel.sartori04@gmail.com>",
   "license": "MIT"
 }
-
