@@ -13,7 +13,7 @@ export const createMsgs = (namespace, names) =>
         .map (_ => createMsg (namespace, _))
         .reduce ((acc, x) => ({...acc, [x.key]: x.build }), {})
 
-export const buidStores = (current_reducers, stores) => {
+export const buildStores = (current_reducers, stores) => {
     const cmds = stores.filter (_ => _.cmd).map(_ => _.cmd)
     const reducers = stores.reduce ((acc, store) => {
         return { ...acc, [store.namespace]: store.update }
