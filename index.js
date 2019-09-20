@@ -13,6 +13,14 @@ export const createMsgs = (namespace, names) =>
         .map (_ => createMsg (namespace, _))
         .reduce ((acc, x) => ({...acc, [x.key]: x.build }), {})
 
+export const buidStores = (current_reducers, stores) => {
+    const cmds = stores.filter (_ => _.cmd).map(_ => _.cmd)
+    const reducers = stores.reduce ((acc, store) => {
+        return { ...acc, [store.namespace]: store.update }
+    }, current_reducers)
+    return { cmds, reducers }
+}
+
 export const registerCmds = xs => {
 
     if (! Array.isArray (xs))
@@ -40,4 +48,3 @@ export const connect = (modelToProps, msgToProps, merge, options) =>
         msgToProps,
         merge || ((m, msg, props) => ({ m, msg, props })),
         options )
-
