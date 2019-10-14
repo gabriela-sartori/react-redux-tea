@@ -21,7 +21,7 @@ export const buildStores = (current_reducers, stores) => {
     return { cmds, reducers }
 }
 
-export const registerCmds = xs => {
+export const registerCmds = (xs, storeIndex = '?') => {
 
     if (! Array.isArray (xs))
         throw new Error ("Expected input to be an array of arrays with 2 elements each [msg, function *]")
@@ -31,6 +31,8 @@ export const registerCmds = xs => {
             throw new Error (`Expected row to be an array, at index ${index}`)
         else if (row.length === 0)
             throw new Error (`Expected row to have 2 elements, at index ${index}`)
+        else if (typeof row[0] !== "function" || row[0].key !== "string")
+            throw new Error (`Expected row first element to be a valid msg from a Msg collection created with createMsgs, at store index ${storeIndex} and row index ${index}`)
         else if (row.length !== 2)
             throw new Error (`Expected row to have 2 elements, at index ${index} and msg ${row[0].key}`)
     })
