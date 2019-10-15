@@ -28,13 +28,11 @@ export const registerCmds = (xs, storeIndex = '?') => {
 
     xs.forEach ((row, index) => {
         if (! Array.isArray (row))
-            throw new Error (`Expected row to be an array, at index ${index}`)
-        else if (row.length === 0)
-            throw new Error (`Expected row to have 2 elements, at index ${index}`)
-        else if (typeof row[0] !== "function" || row[0].key !== "string")
+            throw new Error (`Expected row to be an array [msg, function *], at store index ${storeIndex} and row index ${index}`)
+        else if (typeof row[0] !== "function" || typeof row[0].key !== "string")
             throw new Error (`Expected row first element to be a valid msg from a Msg collection created with createMsgs, at store index ${storeIndex} and row index ${index}`)
         else if (row.length !== 2)
-            throw new Error (`Expected row to have 2 elements, at index ${index} and msg ${row[0].key}`)
+            throw new Error (`Expected row to have 2 elements, at store index ${storeIndex} and row index ${index}`)
     })
 
     return function * () {
