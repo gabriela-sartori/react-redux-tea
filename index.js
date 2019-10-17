@@ -14,6 +14,15 @@ export const createMsgs = (namespace, names) =>
         .reduce ((acc, x) => ({...acc, [x.key]: x.build }), {})
 
 export const buildStores = (current_reducers, stores) => {
+
+    if (! Array.isArray (stores))
+        throw new Error ("Expected 2nd parameter to be an array of stores")
+
+    stores.forEach ((s, index) => {
+        if (typeof s !== "object" || typeof s.namespace !== "string" || typeof s.update !== "function" || ! Array.isArray (s.cmd))
+            throw new Error (`Invalid store at index ${index}. Expected an object { namespace: String, update: Function, cmd: [(Msg, Function *)] }`)
+    })
+
     const cmds = stores.filter (_ => _.cmd).map(_ => _.cmd)
     const reducers = stores.reduce ((acc, store) => {
         return { ...acc, [store.namespace]: store.update }
