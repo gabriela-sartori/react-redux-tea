@@ -13,6 +13,9 @@ export const connect = (modelToProps, msgToProps, merge, options) =>
         merge || ((m, msg, props) => ({ m, msg, props })),
         options )
 
+export const connectNav = createdReduxContainer =>
+    react_redux_connect (m => ({ state: m.nav })) (createdReduxContainer)
+
 // Create messages creators with namespace, to use in reducer without conflicts
 // type alias Msg payload = { payload | type : String }
 // createMsgs :: String -> List String -> Dict String Msg
