@@ -4,5 +4,10 @@
   "main": "index.js",
   "repository": "https://github.com/G4BB3R/react-redux-tea",
   "author": "Gabriel Torrecillas Sartori <gabriel.sartori04@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "react-redux": "^7.2.0",
+    "redux": "^4.0.5",
+    "redux-saga": "^1.1.3"
+  }
 }
