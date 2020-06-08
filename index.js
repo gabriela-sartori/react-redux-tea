@@ -13,6 +13,7 @@ export const connect = (modelToProps, msgToProps, merge, options) =>
         merge || ((m, msg, props) => ({ m, msg, props })),
         options )
 
+// Exporting connect with modelToProps for navigation and without other params
 export const connectNav = createdReduxContainer =>
     react_redux_connect (m => ({ state: m.nav })) (createdReduxContainer)
 
@@ -53,8 +54,7 @@ const store_cmds_to_generator = (cmdDeclarations, storeName = "?", storeIndex = 
 
 // type alias Reducer model = model -> Msg -> model
 // type alias Store model = { namespace : String, update : Reducer model, cmd : List CmdDecl }
-// type ReduxStore
-// buildStores :: Dict String Reducer -> List Store -> { cmds : List Generator, reducer : ReduxStore }
+// buildStores :: Dict String Reducer -> List Store -> { setupStore : SagaMiddleware -> (), reducer : ReduxStore }
 export const buildStores = (staticReducers, stores) => {
 
     if (! Array.isArray (stores))
