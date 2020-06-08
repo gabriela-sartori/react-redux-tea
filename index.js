@@ -2,7 +2,7 @@ import { combineReducers } from "redux"
 import { Provider as react_redux_provider , connect as react_redux_connect } from "react-redux"
 import { all, takeEvery } from "redux-saga/effects"
 
-// Exporting Provider from react-redux it is not needed to import react-redux in every project
+// Exporting Provider from react-redux, so it is not needed to import react-redux in every project
 export const Provider = react_redux_provider
 
 // Exporting connect from react-redux but with some facilities
@@ -28,7 +28,7 @@ export const createMsgs = (namespace, msgNames) =>
 // type alias MsgKey = KeyMsg Msg | KeyStr String
 // type alias CmdDecl = (MsgKey, Generator)
 // store_cmds_to_generator :: List CmdDecl -> Int -> Generator
-const store_cmds_to_generator = (cmdDeclarations, storeIndex = "?", storeName = "?") => {
+const store_cmds_to_generator = (cmdDeclarations, storeName = "?", storeIndex = "?") => {
 
     if (! Array.isArray (cmdDeclarations))
         throw new Error ("Expected input to be an array of arrays with 2 elements each [msg, function *]")
@@ -66,7 +66,7 @@ export const buildStores = (staticReducers, stores) => {
     const setupStore = sagaMiddleware =>
         stores
             .filter (_ => _.cmd)
-            .map((store, index) => store_cmds_to_generator (store.cmd, index))
+            .map((store, index) => store_cmds_to_generator (store.cmd, storeName, index))
             .forEach(generator => sagaMiddleware.run(generator))
     
     return { setupStore, reducer }
