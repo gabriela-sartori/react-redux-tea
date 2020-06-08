@@ -66,7 +66,7 @@ export const buildStores = (staticReducers, stores) => {
     const setupStore = sagaMiddleware =>
         stores
             .filter (_ => _.cmd)
-            .map((store, index) => store_cmds_to_generator (store.cmd, storeName, index))
+            .map((store, index) => store_cmds_to_generator (store.cmd, store.namespace, index))
             .forEach(generator => sagaMiddleware.run(generator))
     
     return { setupStore, reducer }
