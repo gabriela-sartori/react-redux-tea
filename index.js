@@ -23,7 +23,7 @@ export const createMsgs = (namespace, msgNames) =>
     msgNames
         .reduce((acc, msgName) => {
             const key = `${namespace}/${msgName}`
-            let constructor = payload => ({ type: key, ...payload })
+            let constructor = payload => ({ ...payload, type: key })
             constructor.key = key
             return { ...acc, [msgName]: constructor }
         }, {})
