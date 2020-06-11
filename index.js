@@ -5,11 +5,22 @@ import { all, takeEvery } from "redux-saga/effects"
 // Exporting Provider from react-redux, so it is not needed to import react-redux in every project
 export const Provider = react_redux_provider
 
+// Includes message `dispatch` and adapt the others to the compatible way
+// Dict String Msg -> (Dispatcher -> Dict String MsgDispatcher)
+const buildMsgToProps = msgToProps => dispatch => {
+    const adaptedMsgs =
+        Object.entries(msgToProps)
+            .reduce((acc, [ msgName, msgContructor ]) =>
+                ({ ...acc, [msgName]: payload => dispatch(msgContructor(payload)) }), {})
+
+    return { dispatch, ...adaptedMsgs }
+}
+
 // Exporting connect from react-redux but with some facilities
 export const connect = (modelToProps, msgToProps, merge, options) =>
     react_redux_connect (
         typeof modelToProps === "string" ? (m => m[modelToProps]) : modelToProps,
-        msgToProps && (dispatch => ({ dispatch, ...msgToProps })),
+        msgToProps && buildMsgToProps (msgToProps),
         merge || ((m, msg, props) => ({ m, model: m, msg, props })),
         options )
 
