@@ -28,7 +28,7 @@ export const createMsgs = (namespace, msgNames) =>
                 throw new Error (`Cannot create msg with reserved name \`${namespace}/dispatch\``)
 
             if (acc[msgName])
-                throw new Error (`Duplicated msg at \`${namespace}/dispatch\``)
+                throw new Error (`Duplicated msg at \`${namespace}/${msgName}\``)
 
             const key = `${namespace}/${msgName}`
             let constructor = payload => ({ ...payload, type: key })
