@@ -9,8 +9,8 @@ export const Provider = react_redux_provider
 export const connect = (modelToProps, msgToProps, merge, options) =>
     react_redux_connect (
         typeof modelToProps === "string" ? (m => m[modelToProps]) : modelToProps,
-        msgToProps,
-        merge || ((m, msg, props) => ({ m, msg, props })),
+        msgToProps && (dispatch => ({ dispatch, ...msgToProps })),
+        merge || ((m, msg, props) => ({ m, model: m, msg, props })),
         options )
 
 // Exporting connect with modelToProps for navigation and without other params
@@ -23,6 +23,13 @@ export const connectNav = createdReduxContainer =>
 export const createMsgs = (namespace, msgNames) =>
     msgNames
         .reduce((acc, msgName) => {
+            
+            if (msgName === "dispatch")
+                throw new Error (`Cannot create msg with reserved name \`${namespace}/dispatch\``)
+
+            if (acc[msgName])
+                throw new Error (`Duplicated msg at \`${namespace}/dispatch\``)
+
             const key = `${namespace}/${msgName}`
             let constructor = payload => ({ ...payload, type: key })
             constructor.key = key
@@ -65,7 +72,12 @@ export const buildStores = (staticReducers, stores) => {
             throw new Error (`Invalid store at index ${index}. Expected an object { namespace : String, update : Function, cmd : [( Msg, Generator )] }`)
     })
 
-    const reducer = combineReducers(stores.reduce ((acc, store) => ({ ...acc, [store.namespace]: store.update }), staticReducers))
+    const reducer = combineReducers(stores.reduce ((acc, store) => {
+        if (acc[store.namespace])
+            throw new Error (`Duplicated store with namespace \`${store.namespace}\``)
+        return { ...acc, [store.namespace]: store.update }
+    }, staticReducers))
+
     const setupStore = sagaMiddleware =>
         stores
             .filter (_ => _.cmd)
